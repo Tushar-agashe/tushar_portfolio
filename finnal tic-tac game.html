@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #b9d324;
+        }
+        .container {
+            text-align: center;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+        .social-icons {
+    position: absolute; 
+    top: 50px; 
+    right: 50px; 
+    gap: 30px;
+    display: flex; 
+}
+
+.social-icons a img {
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%; 
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3); 
+    transition: transform 0.3s ease; 
+}
+
+.social-icons a img:hover {
+    transform: scale(1.2);
+}
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border: 2px solid black;
+            font-size: 2em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic-Tac-Toe</h1>
+        <div class="board" id="board"></div>
+        <h2 id="winner"></h2>
+        <button onclick="resetGame()">Reset</button>
+    </div>
+    <div class="social-icons">
+        <a href="https://www.instagram.com/tushar_16._?igsh=ZDAyZ2xmcm0ybTNw" target="_blank">
+            <img src="https://i.pinimg.com/564x/7c/c0/21/7cc02104ee0b1c1e191141464fab8a21.jpg" alt="Instagram">
+        </a>
+        <a href="https://youtube.com/@tushar_160?si=kCi1UZXSiwraI6bz" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/YouTube_icon_%282013-2017%29.png/768px-YouTube_icon_%282013-2017%29.png" alt="YouTube">
+    </a>
+    <a href="https://www.linkedin.com/in/tushar-agashe-666a07300?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"  target="_blank">
+        <img src="https://cdn1.iconfinder.com/data/icons/logotypes/32/circle-linkedin-512.png">
+    </a>
+        <a href="https://www.facebook.com/share/1LgXKPV9Ab/" target="_blank">
+            <img src="https://w1.pngwing.com/pngs/346/720/png-transparent-circle-icon-facebook-icon-logo-symbol-cross.png" alt="Facebook">
+        </a>
+       
+    </div>
+    <script>
+        const board = document.getElementById("board");
+        const winnerText = document.getElementById("winner");
+        let cells = [];
+        let currentPlayer = "X";
+        let gameBoard = Array(9).fill(null);
+
+        function checkWinner() {
+            const winningCombinations = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            for (const combo of winningCombinations) {
+                const [a, b, c] = combo;
+                if (gameBoard[a] && gameBoard[a] === gameBoard[b] && gameBoard[a] === gameBoard[c]) {
+                    winnerText.textContent = `${gameBoard[a]} Wins!`;
+                    return true;
+                }
+            }
+            if (!gameBoard.includes(null)) {
+                winnerText.textContent = "It's a Draw!";
+                return true;
+            }
+            return false;
+        }
+
+        function handleClick(index) {
+            if (!gameBoard[index] && !winnerText.textContent) {
+                gameBoard[index] = currentPlayer;
+                cells[index].textContent = currentPlayer;
+                if (!checkWinner()) {
+                    currentPlayer = currentPlayer === "X" ? "O" : "X";
+                }
+            }
+        }
+
+        function resetGame() {
+            gameBoard.fill(null);
+            cells.forEach(cell => cell.textContent = "");
+            currentPlayer = "X";
+            winnerText.textContent = "";
+        }
+
+        function createBoard() {
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.addEventListener("click", () => handleClick(i));
+                board.appendChild(cell);
+                cells.push(cell);
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>
